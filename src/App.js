@@ -58,8 +58,9 @@ class App extends Component {
   //api call to get the list of last 6000 issues, opened and closed
   getData = async () => {
     let data = []
-    for (let i = 0; i < 15; i++) {
-      await axios.get(`https://api.github.com/repos/microsoft/vscode/issues?state=all&per_page=100&page=${i}&sort=updated`)
+    let futures = []
+    for (let i = 0; i < 30; i++) {
+      var f = axios.get(`https://api.github.com/repos/microsoft/vscode/issues?state=all&per_page=100&page=${i}&sort=updated`)
         .then(response => response.data)
         .then(infos => {
           const issues = infos.map(i => ({
@@ -74,8 +75,12 @@ class App extends Component {
         .catch(err => {
           console.log(err);
         })
-      this.getChartData();
+      futures.push(f)
     }
+    for (let i = 0; i < 30; i++) {
+      await futures[i]
+    }
+    this.getChartData();
   }
 
   //api call to get current number of issues
@@ -207,6 +212,8 @@ class App extends Component {
   async componentDidMount() {
     if (localStorage.getItem('data') === null) {
       await this.getData();
+    } else {
+      this.getChartData()
     }
 
   }
