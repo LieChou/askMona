@@ -55,7 +55,7 @@ class App extends Component {
       loaded: false
     }
   }
-  //api call to get the list of last 6000 issues, opened and closed
+  //api call to get the list of last 3000 issues, opened and closed
   getData = async () => {
     let data = []
     let futures = []
@@ -97,7 +97,7 @@ class App extends Component {
       })
   }
 
-  //first unction to get data needed for chart
+  //first function to get data needed for chart
   getChartData = () => {
 
     //retreiveData from local Storage 
@@ -215,7 +215,6 @@ class App extends Component {
     } else {
       this.getChartData()
     }
-
   }
 
   handleStartChange = (startDate) => {
